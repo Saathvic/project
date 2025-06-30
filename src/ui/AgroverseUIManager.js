@@ -1,4 +1,4 @@
-export class MinecraftUIManager {
+export class AgroverseUIManager {
   constructor() {
     this.currentCrop = null;
     this.onCropAction = null;

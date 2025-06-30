@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { World } from './world/World.js';
 import { Player } from './player/Player.js';
 import { InputManager } from './input/InputManager.js';
-import { MinecraftUIManager } from './ui/MinecraftUIManager.js';
+import { AgroverseUIManager } from './ui/AgroverseUIManager.js';
 import { RealisticCropManager } from './crops/RealisticCropManager.js';
 import { EnhancedRootSystem } from './crops/EnhancedRootSystem.js';
 import { AudioManager } from './audio/AudioManager.js';
@@ -10,7 +10,7 @@ import { ParticleManager } from './effects/ParticleManager.js';
 import { APIStatusManager } from './ui/APIStatusManager.js';
 import { ToolManager } from './tools/ToolManager.js';
 
-class MinecraftFarmSimulator {
+class AgroverseSimulator {
   constructor() {
     this.canvas = document.getElementById('gameCanvas');
     this.scene = new THREE.Scene();
@@ -32,12 +32,12 @@ class MinecraftFarmSimulator {
     };
     
     this.setupRenderer();
-    this.setupMinecraftLighting();
+    this.setupRealisticLighting();
     
     this.world = new World(this.scene);
     this.player = new Player(this.scene, this.camera);
     this.inputManager = new InputManager();
-    this.uiManager = new MinecraftUIManager();
+    this.uiManager = new AgroverseUIManager();
     this.cropManager = new RealisticCropManager(this.scene);
     this.rootSystem = new EnhancedRootSystem(this.scene);
     this.audioManager = new AudioManager();
@@ -53,7 +53,7 @@ class MinecraftFarmSimulator {
 
   setupRenderer() {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor(0x87CEEB); // Minecraft sky blue
+    this.renderer.setClearColor(0x87CEEB); // Natural sky blue
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -64,8 +64,8 @@ class MinecraftFarmSimulator {
     this.scene.fog = new THREE.Fog(0x87CEEB, 100, 300);
   }
 
-  setupMinecraftLighting() {
-    // Ambient light (bright like Minecraft)
+  setupRealisticLighting() {
+    // Ambient light (bright and natural)
     const ambientLight = new THREE.AmbientLight(0x404080, 0.6);
     this.scene.add(ambientLight);
 
@@ -212,7 +212,7 @@ class MinecraftFarmSimulator {
     if (this.gameStarted) return;
     
     this.gameStarted = true;
-    console.log('Minecraft Farm Simulator started!');
+    console.log('Agroverse Simulator started!');
     this.animate();
   }
 
@@ -336,5 +336,5 @@ class MinecraftFarmSimulator {
 
 // Initialize the game when the page loads
 window.addEventListener('DOMContentLoaded', () => {
-  new MinecraftFarmSimulator();
+  new AgroverseSimulator();
 });

@@ -34,7 +34,7 @@ export class ThreeDUIManager {
     this.onCropAction = null;
     this.onRootViewToggle = null;
     
-    this.createMinecraftStyleHUD();
+    this.createAgroverseStyleHUD();
     this.createCrosshair();
     this.createInstructions();
     
@@ -174,7 +174,7 @@ export class ThreeDUIManager {
     return mesh;
   }
 
-  createMinecraftStyleHUD() {
+  createAgroverseStyleHUD() {
     // Health display
     this.healthText = this.createText('❤️ 100', {
       position: [-8, 4.5, -10],

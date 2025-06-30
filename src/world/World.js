@@ -3,19 +3,19 @@ import * as THREE from 'three';
 export class World {
   constructor(scene) {
     this.scene = scene;
-    this.createMinecraftTerrain();
+    this.createFarmTerrain();
     this.createNormalSky();
     this.addEnvironmentalDetails();
   }
 
-  createMinecraftTerrain() {
-    // Create flat farmland like Minecraft
+  createFarmTerrain() {
+    // Create flat farmland terrain
     const farmSize = 60;
     
     // Main grass terrain
     const grassGeometry = new THREE.PlaneGeometry(farmSize * 2, farmSize * 2);
     const grassMaterial = new THREE.MeshLambertMaterial({ 
-      color: 0x7CB342 // Minecraft grass green
+      color: 0x7CB342 // Natural grass green
     });
     
     const grassland = new THREE.Mesh(grassGeometry, grassMaterial);
@@ -26,12 +26,12 @@ export class World {
     // Create dirt patches for farming
     this.createFarmingPlots();
     
-    // Add Minecraft-style structures
-    this.createMinecraftStructures();
+    // Add farm structures
+    this.createFarmStructures();
   }
 
   createFarmingPlots() {
-    // Create tilled soil plots like Minecraft
+    // Create tilled soil plots for farming
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 12; col++) {
         const x = (col - 6) * 3;
@@ -40,7 +40,7 @@ export class World {
         // Tilled soil block
         const soilGeometry = new THREE.BoxGeometry(2.8, 0.2, 2.8);
         const soilMaterial = new THREE.MeshLambertMaterial({ 
-          color: 0x8D6E63 // Minecraft dirt brown
+          color: 0x8D6E63 // Natural dirt brown
         });
         const soil = new THREE.Mesh(soilGeometry, soilMaterial);
         
@@ -66,24 +66,24 @@ export class World {
     }
   }
 
-  createMinecraftStructures() {
-    // Simple Minecraft-style house
-    this.createMinecraftHouse();
+  createFarmStructures() {
+    // Simple farmhouse
+    this.createFarmhouse();
     
     // Fence around farm
-    this.createMinecraftFence();
+    this.createFarmFence();
     
     // Well
-    this.createMinecraftWell();
+    this.createFarmWell();
     
     // Storage chest
     this.createStorageChest();
   }
 
-  createMinecraftHouse() {
+  createFarmhouse() {
     const houseGroup = new THREE.Group();
     
-    // House walls (cobblestone texture)
+    // House walls (stone texture)
     const wallGeometry = new THREE.BoxGeometry(8, 4, 8);
     const wallMaterial = new THREE.MeshLambertMaterial({ color: 0x757575 });
     const walls = new THREE.Mesh(wallGeometry, wallMaterial);
@@ -92,7 +92,7 @@ export class World {
     walls.receiveShadow = true;
     houseGroup.add(walls);
     
-    // Roof (red like Minecraft)
+    // Roof (red farmhouse style)
     const roofGeometry = new THREE.ConeGeometry(6, 3, 4);
     const roofMaterial = new THREE.MeshLambertMaterial({ color: 0xD32F2F });
     const roof = new THREE.Mesh(roofGeometry, roofMaterial);
@@ -126,7 +126,7 @@ export class World {
     this.scene.add(houseGroup);
   }
 
-  createMinecraftFence() {
+  createFarmFence() {
     const fenceMaterial = new THREE.MeshLambertMaterial({ color: 0x8D6E63 });
     
     // Create fence posts around the farm area
@@ -157,7 +157,7 @@ export class World {
     });
   }
 
-  createMinecraftWell() {
+  createFarmWell() {
     const wellGroup = new THREE.Group();
     
     // Well base (stone)
@@ -207,7 +207,7 @@ export class World {
   }
 
   createStorageChest() {
-    // Minecraft-style chest
+    // Farm-style storage chest
     const chestGeometry = new THREE.BoxGeometry(2, 1.5, 1.5);
     const chestMaterial = new THREE.MeshLambertMaterial({ color: 0x8D6E63 });
     const chest = new THREE.Mesh(chestGeometry, chestMaterial);
@@ -226,7 +226,7 @@ export class World {
   }
 
   createNormalSky() {
-    // Create normal blue sky like Minecraft
+    // Create natural blue sky for the farm
     const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
     
     // Create sky gradient
@@ -253,17 +253,17 @@ export class World {
     this.scene.add(sky);
 
     // Add fluffy white clouds
-    this.createMinecraftClouds();
+    this.createNaturalClouds();
   }
 
-  createMinecraftClouds() {
+  createNaturalClouds() {
     const cloudMaterial = new THREE.MeshBasicMaterial({ 
       color: 0xffffff, 
       transparent: true, 
       opacity: 0.9 
     });
 
-    // Create blocky Minecraft-style clouds
+    // Create natural fluffy clouds
     for (let i = 0; i < 15; i++) {
       const cloudGroup = new THREE.Group();
       
