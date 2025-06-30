@@ -853,6 +853,26 @@ body.root-view-active::after {
   .instructions-content {
     grid-template-columns: 1fr;
   }
+  
+  .bolt-badge-text {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .bolt-badge-text img {
+    height: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bolt-badge img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .bolt-badge-text img {
+    height: 22px;
+  }
 }
 
 /* Performance optimizations */
@@ -933,4 +953,37 @@ canvas {
 
 .bolt-badge-text img:hover {
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+/* Responsive Badge Styles */
+@media (max-width: 768px) {
+  .bolt-badge {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .bolt-badge img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .bolt-badge-text {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .bolt-badge-text img {
+    height: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bolt-badge img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .bolt-badge-text img {
+    height: 22px;
+  }
 }
