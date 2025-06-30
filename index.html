@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft Farm Simulator</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- API Status Indicator -->
+    <div id="apiStatusIndicator" class="api-status-indicator">
+      <div id="apiStatusDot" class="status-dot red"></div>
+      <span id="apiStatusText">API Disconnected</span>
+    </div>
+
+    <!-- Game UI -->
+    <div id="gameUI">
+      <!-- Top Menu Bar -->
+      <div id="topMenuBar" class="top-menu-bar">
+        <!-- Health Display -->
+        <div class="health-display">
+          <span class="health-icon">❤️</span>
+          <div class="health-bar">
+            <div id="healthFill" class="health-fill"></div>
+          </div>
+          <span id="healthText" class="health-text">100</span>
+        </div>
+
+        <!-- Current Tool Display -->
+        <div id="currentTool" class="current-tool">
+          <span class="tool-icon">🔨</span>
+          <span class="tool-name">Hoe</span>
+        </div>
+
+        <!-- Time and Weather -->
+        <div class="time-weather">
+          <div id="gameTime" class="game-time">Day 1 - 06:00</div>
+          <div class="weather-info">
+            <span id="weatherIcon">☀️</span>
+            <span id="temperature">22°C</span>
+            <span id="humidity">65%</span>
+          </div>
+        </div>
+
+        <!-- Menu Buttons -->
+        <div class="menu-buttons">
+          <button id="pauseBtn" class="menu-btn" title="Pause">⏸️</button>
+          <button id="settingsBtn" class="menu-btn" title="Settings">⚙️</button>
+          <button id="apiBtn" class="menu-btn" title="AI Status">🤖</button>
+          <button id="rootViewBtn" class="menu-btn" title="Root View">🌱</button>
+        </div>
+      </div>
+
+      <!-- Crosshair -->
+      <div id="crosshair" class="crosshair">
+        <div class="crosshair-center">+</div>
+      </div>
+
+      <!-- Plant Popup (when looking at plants) -->
+      <div id="plantPopup" class="plant-popup hidden">
+        <div class="popup-header">
+          <span id="plantName">Plant Name</span>
+          <span id="plantHealthIndicator" class="plant-health good">●</span>
+        </div>
+        <div class="popup-stats">
+          <div class="stat-bar">
+            <span>Growth:</span>
+            <div class="bar"><div id="growthBar" class="fill growth"></div></div>
+            <span id="growthValue">0%</span>
+          </div>
+          <div class="stat-bar">
+            <span>Health:</span>
+            <div class="bar"><div id="healthBar" class="fill health"></div></div>
+            <span id="healthValue">0%</span>
+          </div>
+          <div class="stat-bar">
+            <span>Water:</span>
+            <div class="bar"><div id="waterBar" class="fill water"></div></div>
+            <span id="waterValue">0%</span>
+          </div>
+        </div>
+        <div class="popup-hint">Press E for details</div>
+      </div>
+
+      <!-- Tool Bar -->
+      <div class="tool-bar">
+        <div class="tool-slot active" data-tool="hoe" title="Hoe [1]">🔨</div>
+        <div class="tool-slot" data-tool="watering_can" title="Watering Can [2]">💧</div>
+        <div class="tool-slot" data-tool="seeds" title="Seeds [3]">🌱</div>
+        <div class="tool-slot" data-tool="fertilizer" title="Fertilizer [4]">💊</div>
+        <div class="tool-slot" data-tool="shears" title="Shears [5]">✂️</div>
+        <div class="tool-slot" data-tool="harvest_basket" title="Basket [6]">🧺</div>
+      </div>
+    </div>
+
+    <!-- Detailed Plant Panel -->
+    <div id="plantDetailsPanel" class="detailed-panel hidden">
+      <div class="panel-header">
+        <h2 id="detailPlantName">Plant Analysis</h2>
+        <button id="closePanelBtn" class="close-btn">×</button>
+      </div>
+      
+      <div class="panel-tabs">
+        <button class="tab-btn active" data-tab="overview">Overview</button>
+        <button class="tab-btn" data-tab="disease">Disease</button>
+        <button class="tab-btn" data-tab="ai">AI Analysis</button>
+      </div>
+      
+      <div class="panel-content">
+        <div id="overviewTab" class="tab-content active">
+          <div id="detailedStats" class="detailed-stats"></div>
+          <div id="actionButtons" class="action-buttons"></div>
+        </div>
+        
+        <div id="diseaseTab" class="tab-content">
+          <div id="diseaseInfo" class="disease-info"></div>
+        </div>
+        
+        <div id="aiTab" class="tab-content">
+          <div id="aiAnalysis" class="ai-analysis"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="pause-menu hidden">
+      <div class="menu-panel">
+        <h2>Game Paused</h2>
+        <div class="menu-options">
+          <button id="resumeBtn" class="menu-option">Resume Game</button>
+          <button id="saveGameBtn" class="menu-option">Save Game</button>
+          <button id="loadGameBtn" class="menu-option">Load Game</button>
+          <button id="mainMenuBtn" class="menu-option">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settingsPanel" class="settings-panel hidden">
+      <div class="panel-header">
+        <h2>Settings</h2>
+        <button id="closeSettingsBtn" class="close-btn">×</button>
+      </div>
+      <div class="settings-content">
+        <div class="setting-group">
+          <label>Render Distance:</label>
+          <input type="range" id="renderDistance" min="50" max="300" value="150">
+          <span id="renderDistanceValue">150</span>
+        </div>
+        <div class="setting-group">
+          <label>Master Volume:</label>
+          <input type="range" id="masterVolume" min="0" max="100" value="50">
+          <span id="masterVolumeValue">50%</span>
+        </div>
+        <div class="setting-group">
+          <label>Time Speed:</label>
+          <input type="range" id="timeSpeed" min="0.1" max="5" step="0.1" value="1">
+          <span id="timeSpeedValue">1x</span>
+        </div>
+        <div class="setting-group">
+          <label>
+            <input type="checkbox" id="enableShadows" checked>
+            Enable Shadows
+          </label>
+        </div>
+        <div class="setting-group">
+          <label>
+            <input type="checkbox" id="enableParticles" checked>
+            Enable Particles
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Panel -->
+    <div id="apiPanel" class="api-panel hidden">
+      <div class="panel-header">
+        <h2>🤖 AI API Status</h2>
+        <button id="closeApiBtn" class="close-btn">×</button>
+      </div>
+      <div class="api-content">
+        <div class="api-status">
+          <div class="status-item">
+            <span>Groq API:</span>
+            <span id="groqStatus">🔴 Disconnected</span>
+          </div>
+          <div class="status-item">
+            <span>API Key:</span>
+            <span id="apiKeyStatus">Not configured</span>
+          </div>
+          <div class="status-item">
+            <span>Requests Today:</span>
+            <span id="requestCount">0</span>
+          </div>
+          <div class="status-item">
+            <span>Last Request:</span>
+            <span id="lastRequest">Never</span>
+          </div>
+        </div>
+        
+        <div class="api-controls">
+          <button id="testApiBtn" class="api-btn">Test Connection</button>
+          <button id="clearCacheBtn" class="api-btn">Clear Cache</button>
+        </div>
+        
+        <div class="api-settings">
+          <div class="setting-group">
+            <label>AI Temperature:</label>
+            <input type="range" id="aiTemperature" min="0" max="1" step="0.1" value="0.7">
+            <span id="temperatureValue">0.7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions Overlay -->
+    <div id="instructionsOverlay" class="instructions-overlay">
+      <div class="instructions-panel">
+        <h1>🌾 Minecraft Farm Simulator</h1>
+        <div class="instructions-content">
+          <div class="instruction-section">
+            <h3>🎮 Controls</h3>
+            <ul>
+              <li><strong>WASD</strong> - Move around</li>
+              <li><strong>Mouse</strong> - Look around</li>
+              <li><strong>Space</strong> - Jump</li>
+              <li><strong>E</strong> - Interact with crops</li>
+              <li><strong>1-6</strong> - Select tools</li>
+              <li><strong>Mouse Wheel</strong> - Cycle tools</li>
+            </ul>
+          </div>
+          
+          <div class="instruction-section">
+            <h3>🔧 Tools</h3>
+            <ul>
+              <li><strong>🔨 Hoe</strong> - Prepare soil</li>
+              <li><strong>💧 Watering Can</strong> - Water plants</li>
+              <li><strong>🌱 Seeds</strong> - Plant crops</li>
+              <li><strong>💊 Fertilizer</strong> - Boost growth</li>
+              <li><strong>✂️ Shears</strong> - Treat diseases</li>
+              <li><strong>🧺 Basket</strong> - Harvest crops</li>
+            </ul>
+          </div>
+          
+          <div class="instruction-section">
+            <h3>🌿 Features</h3>
+            <ul>
+              <li><strong>R</strong> - Toggle root view</li>
+              <li><strong>P</strong> - Pause menu</li>
+              <li><strong>🤖 AI Analysis</strong> - Smart crop insights</li>
+              <li><strong>Realistic Growth</strong> - Time-based farming</li>
+            </ul>
+          </div>
+        </div>
+        
+        <button id="startGameBtn" class="start-btn">Start Farming!</button>
+      </div>
+    </div>
+
+    <div id="app">
+      <canvas id="gameCanvas"></canvas>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
